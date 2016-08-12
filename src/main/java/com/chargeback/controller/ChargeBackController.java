@@ -29,17 +29,40 @@ import com.chargeback.vo.Stats;
 public class ChargeBackController {
 
 	// TODO :: Need to fetch this from Eureka Server Client Id by just giving application name 
+	
 	private static final String METRICS_URL = "http://metricsfetchdemo-unflaming-overcensoriousness.cfapps.io/metrics/getmetrics";
+	private static final String METRICS_INSTANCE_URL = "http://metricsfetchdemo-unflaming-overcensoriousness.cfapps.io/metrics/getInstanceMetrics";
 	private static final String FREERESOURRCE_URL = "http://metricsfetchdemo-unflaming-overcensoriousness.cfapps.io/metrics/getFreeResource";
 	
 	
 	@Autowired private RestTemplate restTemplate; 
 	
 	@RequestMapping(value = "/getOrganizations", produces = { MediaType.APPLICATION_JSON_VALUE }, method = RequestMethod.GET)
-	public HttpStatus getOrganizations() {
+	public ChartVO getOrganizations() {
+		final ResponseEntity<List<Stats>> response = restTemplate.exchange(METRICS_INSTANCE_URL, HttpMethod.GET, HttpEntity.EMPTY,
+				new ParameterizedTypeReference<List<Stats>>() {
+				});
+		/*
+		
+		Function<ResponseEntity<List<Stats>>, List<String>> memUsedLambda = memused ->response.getBody().stream().map(stat -> stat.getRecords()).flatMap(records-> records.stream()).collect(Collectors.toList())
+				.stream().map(record -> record.getUsage().getMem()).collect(Collectors.toList());
+		
+		*/
+		return null;
+			
+	}
+	
+	
+	@RequestMapping(value = "/getSpace", produces = { MediaType.APPLICATION_JSON_VALUE }, method = RequestMethod.GET)
+	public HttpStatus getSpace() {
 		final ResponseEntity<List<Stats>> response = restTemplate.exchange("http://metricsfetchdemo-unflaming-overcensoriousness.cfapps.io/metrics/getmetrics", HttpMethod.GET, HttpEntity.EMPTY,
 				new ParameterizedTypeReference<List<Stats>>() {
 				});
+		/*
+		Function<ResponseEntity<List<Stats>>, List<String>> memUsedLambda = memused ->response.getBody().stream().map(stat -> stat.getRecords()).flatMap(records-> records.stream()).collect(Collectors.toList())
+				.stream().map(record -> record.getUsage().getMem()).collect(Collectors.toList());*/
+		
+		
 		return response.getStatusCode();
 			
 	}

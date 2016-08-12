@@ -10,6 +10,8 @@ public class Record {
 	
 	private String memQuota;
 	
+	private String org;
+	
 
 		public String getMemQuota() {
 		return memQuota;
@@ -33,6 +35,14 @@ public class Record {
 
 	public void setDiskQuota(String diskQuota) {
 		this.diskQuota = diskQuota;
+	}
+
+	public String getOrg() {
+		return org;
+	}
+
+	public void setOrg(String org) {
+		this.org = org;
 	}
 
 	public Usage getUsage() {

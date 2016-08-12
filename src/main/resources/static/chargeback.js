@@ -90,14 +90,10 @@ var getOrganizations = function() {
 	$.ajax({
 		url : "getOrganizations",
 		success : function(data) {
-			alert("tempOrgArray : " + tempOrgArray);
 			getDropDownList("OrgSelect",tempOrgArray)
-			//populateSpaces(data, "space");
+			
 		},
-		/*error: function (request, status, error) {
-	       
-			getDropDownList("OrgSelect",tempOrgArray)
-	    }*/
+	
 		
 	});
 
@@ -107,14 +103,9 @@ var getSpace = function() {
 	$.ajax({
 		url : "getSpace",
 		success : function(data) {
-			alert("tempSpaceArray : " + tempSpaceArray);
-			getDropDownList("OrgSpace",tempOrgArray);
-			//populateSpaces(data, "space");
+			getDropDownList("OrgSpace",tempSpaceArray);
+			
 		},
-		/*error: function (request, status, error) {
-	       
-			getDropDownList("OrgSelect",tempOrgArray)
-	    }*/
 		
 	});
 
@@ -154,7 +145,7 @@ var populateChartDetails = function(data, id) {
 			hoverBackgroundColor : colorArray
 		} ]
 	};
-
+	
 	var ctx = canvasId.getContext("2d");
 	var midX = canvasId.width / 2;
 	var midY = canvasId.height / 2;
@@ -180,18 +171,16 @@ console.log(chartData);
 						if(!id.toUpperCase().includes("CPU")){
 							if(currentValue>=  memoryFig[1]){
 								return ((currentValue/parseInt(memoryFig[1])).toFixed(2) + memoryConv[2]);
-							}else if(currentValue<1024){
-								return (currentValue + memoryConv[0]);
-							} else if(currentValue>=memoryFig[0] && currentValue<  memoryFig[1] ){
+							}else if(currentValue>=memoryFig[0] && currentValue<  memoryFig[1] ){
 								return (currentValue + memoryConv[1]);
-							}
+							}else if(currentValue<memoryFig[0]){
+								return (currentValue + memoryConv[0]);
+							} 
 						}else{
 							var precentage = Math.floor(((currentValue / total) * 100) + 0.5);
 							return precentage + "%";
 						}
-						/*var precentage = Math
-								.floor(((currentValue / total) * 100) + 0.5);
-						return precentage + "%";*/
+						
 					}
 				}
 			}
@@ -240,29 +229,31 @@ function getTotalValue(arr) {
 	return total;
 }
 
-/*
-function getDropDownList(name, id, optionList) {
-    var combo = $("<select></select>").attr("id", id).attr("name", name);
-
-    $.each(optionList, function (i, el) {
-        combo.append("<option>" + el + "</option>");
-    });
-
-    return combo;
-    // OR
-    $("#SELECTOR").append(combo);
-}*/
 
 
 function getDropDownList( id, optionList) {
 	
 		var selectElement= document.getElementById(id);
-	    //var combo = $("<select></select>").attr("id", id).attr("name", name);
-	
-		for (var i = 0; i<=optionList.length; i++){
+		for (var i = 0; i<=optionList.length-1; i++){
 		    var opt = document.createElement('option');
 		    opt.value = optionList[i];
 		    opt.innerHTML = optionList[i];
 		    selectElement.appendChild(opt);
 		}
+}
+function openTab(evt, tabName) {
+    var i, tabcontent, tablinks;
+  //  var tab = document.getElementsByName(tabName);
+    document.getElementById(tabName).style.visibility  = 'visible';
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+    	alert(tablinks[i].className = tablinks[i].className);
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
 }
